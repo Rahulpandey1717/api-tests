@@ -1,0 +1,488 @@
+
+{
+	"info": {
+		"_postman_id": "429c234b-0d6c-4cbc-a16c-f77c779b88f1",
+		"name": "Emilo API Tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "46057363",
+		"_collection_link": "https://rahulpandey-7370588.postman.co/workspace/3972ff53-246c-44ef-8c7f-358dd44812f0/collection/46057363-429c234b-0d6c-4cbc-a16c-f77c779b88f1?action=share&source=collection_link&creator=46057363"
+	},
+	"item": [
+		{
+			"name": "Registration",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"const ts = Date.now();\r",
+							"const email = `testuser_${ts}@example.com`;\r",
+							"pm.environment.set(\"uniqueEmail\", email); "
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has userId\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData).to.have.property(\"userId\");\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"Test User\",\r\n  \"email\": \"{{uniqueEmail}}\",\r\n  \"password\": \"Password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emilo-live-stream-back-1.onrender.com/api/auth/register",
+					"protocol": "https",
+					"host": [
+						"emilo-live-stream-back-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response has token\", function () {\r",
+							"    let jsonData;\r",
+							"    try {\r",
+							"        jsonData = pm.response.json();\r",
+							"        pm.expect(jsonData).to.have.property(\"token\");\r",
+							"        pm.environment.set(\"authToken\", jsonData.token);\r",
+							"    } catch (e) {\r",
+							"        pm.expect.fail(\"Response is not valid JSON\");\r",
+							"    }\r",
+							"});"
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"email\": \"{{uniqueEmail}}\",\r\n  \"password\": \"Password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emilo-live-stream-back-1.onrender.com/api/auth/login",
+					"protocol": "https",
+					"host": [
+						"emilo-live-stream-back-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "create",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Post ID exists\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.result).to.have.property(\"_id\");  \r",
+							"    pm.environment.set(\"postId\", jsonData.result._id);  \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGQzYzhiM2VhOGZhOTdkN2ZkZjc3YTUiLCJpYXQiOjE3NTg3MjIyMTYsImV4cCI6MTc1ODgwODYxNn0.4PS924v7IWHVrV4GQuw3noaE3rvcpDtIQABfnOg4fG4",
+						"type": "text"
+					},
+					{
+						"key": "origin",
+						"value": "https://emilo-live-stream-front.vercel.app",
+						"type": "text"
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i",
+						"type": "text"
+					},
+					{
+						"key": "referer",
+						"value": "https://emilo-live-stream-front.vercel.app/",
+						"type": "text"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Google Chrome\";v=\"140\"",
+						"type": "text"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0",
+						"type": "text"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\"",
+						"type": "text"
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty",
+						"type": "text"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors",
+						"type": "text"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "cross-site",
+						"type": "text"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "content",
+							"value": "Hi, Good morning everyone.",
+							"type": "text"
+						},
+						{
+							"key": "is_private",
+							"value": "false",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "ocd2on9Mf/Screenshot 2025-09-24 091915.jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://emilo-live-stream-back-1.onrender.com/api/posts",
+					"protocol": "https",
+					"host": [
+						"emilo-live-stream-back-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "comment",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Post ID exists\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.result).to.have.property(\"_id\");  \r",
+							"    pm.environment.set(\"postId\", jsonData.result._id);  \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGQzYzhiM2VhOGZhOTdkN2ZkZjc3YTUiLCJpYXQiOjE3NTg3MjIyMTYsImV4cCI6MTc1ODgwODYxNn0.4PS924v7IWHVrV4GQuw3noaE3rvcpDtIQABfnOg4fG4",
+						"type": "text"
+					},
+					{
+						"key": "origin",
+						"value": "https://emilo-live-stream-front.vercel.app",
+						"type": "text"
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i",
+						"type": "text"
+					},
+					{
+						"key": "referer",
+						"value": "https://emilo-live-stream-front.vercel.app/",
+						"type": "text"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Google Chrome\";v=\"140\"",
+						"type": "text"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0",
+						"type": "text"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\"",
+						"type": "text"
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty",
+						"type": "text"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors",
+						"type": "text"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "cross-site",
+						"type": "text"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\"comment\":\"hi\"}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://emilo-live-stream-back-1.onrender.com/api/posts/comment/68ce9fc5ce0501e6e2ccdffc",
+					"protocol": "https",
+					"host": [
+						"emilo-live-stream-back-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"posts",
+						"comment",
+						"68ce9fc5ce0501e6e2ccdffc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "like",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Status code is 201\", function () {\r",
+							"    pm.response.to.have.status(201);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Post ID exists\", function () {\r",
+							"    const jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.result).to.have.property(\"_id\");  \r",
+							"    pm.environment.set(\"postId\", jsonData.result._id);  \r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript",
+						"packages": {},
+						"requests": {}
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2OGQzYzhiM2VhOGZhOTdkN2ZkZjc3YTUiLCJpYXQiOjE3NTg3MjIyMTYsImV4cCI6MTc1ODgwODYxNn0.4PS924v7IWHVrV4GQuw3noaE3rvcpDtIQABfnOg4fG4",
+						"type": "text"
+					},
+					{
+						"key": "origin",
+						"value": "https://emilo-live-stream-front.vercel.app",
+						"type": "text"
+					},
+					{
+						"key": "priority",
+						"value": "u=1, i",
+						"type": "text"
+					},
+					{
+						"key": "referer",
+						"value": "https://emilo-live-stream-front.vercel.app/",
+						"type": "text"
+					},
+					{
+						"key": "sec-ch-ua",
+						"value": "\"Chromium\";v=\"140\", \"Not=A?Brand\";v=\"24\", \"Google Chrome\";v=\"140\"",
+						"type": "text"
+					},
+					{
+						"key": "sec-ch-ua-mobile",
+						"value": "?0",
+						"type": "text"
+					},
+					{
+						"key": "sec-ch-ua-platform",
+						"value": "\"Windows\"",
+						"type": "text"
+					},
+					{
+						"key": "sec-fetch-dest",
+						"value": "empty",
+						"type": "text"
+					},
+					{
+						"key": "sec-fetch-mode",
+						"value": "cors",
+						"type": "text"
+					},
+					{
+						"key": "sec-fetch-site",
+						"value": "cross-site",
+						"type": "text"
+					},
+					{
+						"key": "user-agent",
+						"value": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "https://emilo-live-stream-back-1.onrender.com/api/posts/like/68ce9fc5ce0501e6e2ccdffc/like",
+					"protocol": "https",
+					"host": [
+						"emilo-live-stream-back-1",
+						"onrender",
+						"com"
+					],
+					"path": [
+						"api",
+						"posts",
+						"like",
+						"68ce9fc5ce0501e6e2ccdffc",
+						"like"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

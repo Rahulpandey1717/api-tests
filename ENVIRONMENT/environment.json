@@ -1,0 +1,28 @@
+
+{
+	"id": "b8d99e4e-9a92-45c8-9e11-f8ab1f99e8b6",
+	"name": "AutomationEnv.",
+	"values": [
+		{
+			"key": "uniqueEmail",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "authToken",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		},
+		{
+			"key": "postId",
+			"value": "",
+			"type": "any",
+			"enabled": true
+		}
+	],
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2025-09-24T14:48:59.481Z",
+	"_postman_exported_using": "Postman/11.64.1-250923-0111"
+}
