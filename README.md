@@ -10,3 +10,6 @@
 2. Run the collection:
 
 newman run "collections/Emilo_API_Tests.postman_collection.json" -e "Environment/AutomationEnv.postman_environment.json" -r cli,html --reporter-html-export "reports/report.html"
+
+#Like
+since there is no like API that why we are getting 404
